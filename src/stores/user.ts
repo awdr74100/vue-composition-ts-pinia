@@ -1,42 +1,40 @@
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
-export const useUserStore = defineStore('user', {
-  state: (): {
-    isSignIn: boolean;
-  } => ({
-    isSignIn: false,
-  }),
-  getters: {
-    // greeting: (state) => (state.isSignIn ? '已登入' : '未登入'),
-    greeting(): string {
-      return this.isSignIn ? '已登入' : '未登入';
-    },
-  },
-  actions: {
-    signIn(email: string, password: string) {
-      this.isSignIn = true;
-    },
-    signOut() {
-      this.isSignIn = false;
-    },
-  },
+type Role = 'admin' | 'member';
+
+interface User {
+  name: string;
+  email: string;
+}
+
+export const useUserStore = defineStore('user', () => {
+  const name = ref<null | string>(null);
+  const email = ref<null | string>(null);
+  const role = ref<null | Role>('member');
+  const isAuthenticated = ref(false);
+
+  const signIn = async (usernameOrEmail: string, password: string) => {
+    const url = 'https://jsonplaceholder.typicode.com/users/1';
+
+    const data = await fetch(url).then((res) => res.json() as Promise<User>);
+
+    name.value = data.name;
+    email.value = data.email;
+    role.value = 'admin';
+    isAuthenticated.value = true;
+
+    return true;
+  };
+
+  const signOut = async () => {
+    name.value = null;
+    email.value = null;
+    role.value = 'member';
+    isAuthenticated.value = false;
+
+    return true;
+  };
+
+  return { name, email, role, isAuthenticated, signIn, signOut };
 });
-
-// export const useUserStore = defineStore('user', () => {
-//   const isSignIn = ref(false);
-
-//   const greeting = computed(() => {
-//     return isSignIn.value ? '用戶已登入' : '用戶尚未登入';
-//   });
-
-//   const signIn = (email: string, password: string) => {
-//     isSignIn.value = true;
-//   };
-
-//   const signOut = () => {
-//     isSignIn.value = false;
-//   };
-
-//   return { isSignIn, greeting, signIn, signOut };
-// });

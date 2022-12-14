@@ -1,29 +1,30 @@
 <template>
-  <h1>{{ greeting }}</h1>
-  <form
-    action="#"
-    @submit.prevent="user.signIn(email, password)"
-    v-if="!user.isSignIn"
-  >
-    <label for="email">信箱：</label>
-    <input type="email" id="email" v-model="email" />
+  <form action="#" @submit.prevent="signIn">
+    <label for="usernameOrEmail">用戶名稱或信箱：</label>
+    <input type="text" id="usernameOrEmail" v-model="usernameOrEmail" />
     <label for="password">密碼：</label>
-    <input type="password" id="password" v-model="password" />
+    <input type="text" id="password" v-model="password" />
     <button type="submit">登入</button>
   </form>
-  <button type="button" @click.prevent="user.signOut" v-else>登出</button>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router/auto';
 import { useUserStore } from '@/stores/user';
 
-const user = useUserStore();
-const { greeting } = storeToRefs(user);
+const router = useRouter();
 
-const email = ref('');
+const user = useUserStore();
+
+const usernameOrEmail = ref('');
 const password = ref('');
+
+const signIn = async () => {
+  const status = await user.signIn(usernameOrEmail.value, password.value);
+
+  if (status) router.push('/user');
+};
 </script>
 
-<style></style>
+<style scoped></style>
