@@ -21,9 +21,9 @@ const usernameOrEmail = ref('');
 const password = ref('');
 
 const signIn = async () => {
-  const status = await user.signIn(usernameOrEmail.value, password.value);
+  const done = await user.signIn(usernameOrEmail.value, password.value);
 
-  if (status) router.push('/user');
+  if (done) router.push('/user');
 };
 </script>
 

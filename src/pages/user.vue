@@ -1,13 +1,13 @@
 <template>
-  <h1>
+  <p>
     Hi <span class="text-primary">{{ user.name }}</span>
-  </h1>
-  <h3>
-    You are <span class="text-primary">{{ user.role }}</span>
-  </h3>
-  <h3>
-    Email is <span class="text-primary">{{ user.email }}</span>
-  </h3>
+  </p>
+  <p>
+    ID: <span class="text-primary">{{ user.id }}</span>
+  </p>
+  <p>
+    Email: <span class="text-primary">{{ user.email }}</span>
+  </p>
   <button type="button" @click.prevent="signOut">登出</button>
 </template>
 
@@ -27,9 +27,9 @@ definePage({
 });
 
 const signOut = async () => {
-  const isSignOut = await user.signOut();
+  const done = await user.signOut();
 
-  if (isSignOut) router.push('/');
+  if (done) router.push('/');
 };
 </script>
 
