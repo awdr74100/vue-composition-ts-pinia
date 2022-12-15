@@ -15,13 +15,13 @@ import { useUserStore } from '@/stores/user';
 
 const router = useRouter();
 
-const user = useUserStore();
+const userStore = useUserStore();
 
 const usernameOrEmail = ref('');
 const password = ref('');
 
 const signIn = async () => {
-  const done = await user.signIn(usernameOrEmail.value, password.value);
+  const done = await userStore.signIn(usernameOrEmail.value, password.value);
 
   if (done) router.push('/user');
 };

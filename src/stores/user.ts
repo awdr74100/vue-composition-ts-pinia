@@ -14,22 +14,27 @@ export const useUserStore = defineStore('user', () => {
 
   const loggedIn = computed(() => id.value !== null);
 
-  const signIn = async (usernameOrEmail: string, password: string) => {
-    const url = 'https://jsonplaceholder.typicode.com/users/2';
+  const updateUser = (payload: {
+    id: null | number;
+    name: null | string;
+    email: null | string;
+  }) => {
+    id.value = payload.id;
+    name.value = payload.name;
+    email.value = payload.email;
+  };
 
+  const signIn = async (usernameOrEmail: string, password: string) => {
+    const url = `${import.meta.env.VITE_BACKEND_URL}/users/3`;
     const data = await fetch(url).then((res) => res.json() as Promise<User>);
 
-    id.value = data.id;
-    name.value = data.name;
-    email.value = data.email;
+    updateUser(data);
 
     return true;
   };
 
   const signOut = async () => {
-    id.value = null;
-    name.value = null;
-    email.value = null;
+    updateUser({ id: null, name: null, email: null });
 
     return true;
   };

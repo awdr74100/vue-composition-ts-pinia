@@ -6,13 +6,11 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  const user = useUserStore();
-
-  console.log(user);
+  const userStore = useUserStore();
 
   if (!to.meta.requiredAuth) return true;
 
-  if (user.loggedIn) return true;
+  if (userStore.loggedIn) return true;
 
   return { path: '/' };
 });

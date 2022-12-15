@@ -1,24 +1,24 @@
 <template>
   <p>
-    Hi <span class="text-primary">{{ user.name }}</span>
+    Hi <span class="text-primary">{{ userStore.name }}</span>
   </p>
   <p>
-    ID: <span class="text-primary">{{ user.id }}</span>
+    ID: <span class="text-primary">{{ userStore.id }}</span>
   </p>
   <p>
-    Email: <span class="text-primary">{{ user.email }}</span>
+    Email: <span class="text-primary">{{ userStore.email }}</span>
   </p>
   <button type="button" @click.prevent="signOut">登出</button>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router/auto';
-import { useUserStore } from '@/stores/user';
 import { _definePage as definePage } from 'unplugin-vue-router/runtime';
+import { useUserStore } from '@/stores/user';
 
 const router = useRouter();
 
-const user = useUserStore();
+const userStore = useUserStore();
 
 definePage({
   meta: {
@@ -27,7 +27,7 @@ definePage({
 });
 
 const signOut = async () => {
-  const done = await user.signOut();
+  const done = await userStore.signOut();
 
   if (done) router.push('/');
 };
