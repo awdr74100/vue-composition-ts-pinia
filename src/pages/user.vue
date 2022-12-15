@@ -1,12 +1,12 @@
 <template>
   <p>
-    Hi <span class="text-primary">{{ userStore.name }}</span>
+    ID: <span class="text-primary">{{ user.id }}</span>
   </p>
   <p>
-    ID: <span class="text-primary">{{ userStore.id }}</span>
+    Name: <span class="text-primary">{{ user.name }}</span>
   </p>
   <p>
-    Email: <span class="text-primary">{{ userStore.email }}</span>
+    Email: <span class="text-primary">{{ user.email }}</span>
   </p>
   <button type="button" @click.prevent="signOut">登出</button>
 </template>
@@ -18,7 +18,7 @@ import { useUserStore } from '@/stores/user';
 
 const router = useRouter();
 
-const userStore = useUserStore();
+const user = useUserStore();
 
 definePage({
   meta: {
@@ -27,7 +27,7 @@ definePage({
 });
 
 const signOut = async () => {
-  const done = await userStore.signOut();
+  const done = await user.signOut();
 
   if (done) router.push('/');
 };

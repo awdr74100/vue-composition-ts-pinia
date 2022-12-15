@@ -14,30 +14,30 @@ export const useUserStore = defineStore('user', () => {
 
   const loggedIn = computed(() => id.value !== null);
 
-  const updateUser = (payload: {
+  function updateUser(payload: {
     id: null | number;
     name: null | string;
     email: null | string;
-  }) => {
+  }) {
     id.value = payload.id;
     name.value = payload.name;
     email.value = payload.email;
-  };
+  }
 
-  const signIn = async (usernameOrEmail: string, password: string) => {
+  async function signIn(email: string, password: string) {
     const url = `${import.meta.env.VITE_BACKEND_URL}/users/3`;
     const data = await fetch(url).then((res) => res.json() as Promise<User>);
 
     updateUser(data);
 
     return true;
-  };
+  }
 
-  const signOut = async () => {
+  async function signOut() {
     updateUser({ id: null, name: null, email: null });
 
     return true;
-  };
+  }
 
   return { id, name, email, loggedIn, signIn, signOut };
 });

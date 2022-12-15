@@ -1,9 +1,9 @@
 <template>
   <form action="#" @submit.prevent="signIn">
-    <label for="usernameOrEmail">用戶名稱或信箱：</label>
-    <input type="text" id="usernameOrEmail" v-model="usernameOrEmail" />
+    <label for="email">信箱：</label>
+    <input type="email" id="email" v-model="email" />
     <label for="password">密碼：</label>
-    <input type="text" id="password" v-model="password" />
+    <input type="password" id="password" v-model="password" />
     <button type="submit">登入</button>
   </form>
 </template>
@@ -15,13 +15,13 @@ import { useUserStore } from '@/stores/user';
 
 const router = useRouter();
 
-const userStore = useUserStore();
+const user = useUserStore();
 
-const usernameOrEmail = ref('');
+const email = ref('');
 const password = ref('');
 
 const signIn = async () => {
-  const done = await userStore.signIn(usernameOrEmail.value, password.value);
+  const done = await user.signIn(email.value, password.value);
 
   if (done) router.push('/user');
 };
