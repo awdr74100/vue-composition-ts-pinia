@@ -23,8 +23,16 @@ const password = ref('');
 const signIn = async () => {
   const done = await user.signIn(email.value, password.value);
 
+  // user.$patch((state) => (state.id = 123));
+  // user.$patch({ id: 456 });
+
   if (done) router.push('/user');
 };
+
+user.$subscribe((mutation, state) => {
+  // console.log(mutation);
+  // console.log(state.email);
+});
 </script>
 
 <style scoped></style>
