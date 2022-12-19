@@ -10,7 +10,7 @@ router.beforeEach((to) => {
 
   if (!to.meta.requiredAuth) return true;
 
-  if (user.loggedIn) return true;
+  if (user.signedIn) return true;
 
   return { path: '/' };
 });

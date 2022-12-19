@@ -1,38 +1,110 @@
 <template>
-  <form action="#" @submit.prevent="signIn">
-    <label for="email">信箱：</label>
-    <input type="email" id="email" v-model="email" />
-    <label for="password">密碼：</label>
-    <input type="password" id="password" v-model="password" />
-    <button type="submit">登入</button>
-  </form>
+  <ul>
+    <li>
+      <button
+        class="success"
+        @click.prevent="
+          notifications.add({ type: 'success', title: '成功通知...' })
+        "
+      >
+        成功通知
+      </button>
+    </li>
+    <li>
+      <button
+        class="warning"
+        @click.prevent="
+          notifications.add({ type: 'warning', title: '警告通知...' })
+        "
+      >
+        警告通知
+      </button>
+    </li>
+    <li>
+      <button
+        type="button"
+        class="error"
+        @click.prevent="
+          notifications.add({ type: 'error', title: '失敗通知...' })
+        "
+      >
+        失敗通知
+      </button>
+    </li>
+    <li v-if="!user.signedIn">
+      <button
+        type="button"
+        class="signIn"
+        @click.prevent="user.signIn('email', 'password')"
+      >
+        登入
+      </button>
+    </li>
+    <li v-else>
+      <button type="button" class="signOut" @click.prevent="user.signOut()">
+        登出
+      </button>
+    </li>
+  </ul>
+  <div class="user" v-if="user.signedIn">
+    <p>編號： {{ user.id }}</p>
+    <p>姓名： {{ user.name }}</p>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router/auto';
+import { useNotificationsStore } from '@/stores/notifications';
 import { useUserStore } from '@/stores/user';
 
-const router = useRouter();
-
+const notifications = useNotificationsStore();
 const user = useUserStore();
-
-const email = ref('');
-const password = ref('');
-
-const signIn = async () => {
-  const done = await user.signIn(email.value, password.value);
-
-  // user.$patch((state) => (state.id = 123));
-  // user.$patch({ id: 456 });
-
-  if (done) router.push('/user');
-};
-
-user.$subscribe((mutation, state) => {
-  // console.log(mutation);
-  // console.log(state.email);
-});
 </script>
 
-<style scoped></style>
+<style scoped>
+ul {
+  margin-top: 20px;
+  display: flex;
+}
+
+li {
+  margin-right: 16px;
+}
+
+button {
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+button.success {
+  background-color: rgb(48, 180, 48);
+  color: white;
+}
+
+button.warning {
+  background-color: rgb(255, 118, 27);
+  color: white;
+}
+
+button.error {
+  background-color: rgb(202, 42, 42);
+  color: white;
+}
+
+button.signIn,
+button.signOut {
+  background-color: rgb(9, 159, 209);
+  color: white;
+}
+
+div.user {
+  max-width: 350px;
+  margin-top: 20px;
+  border: 1px solid rgb(63, 63, 63);
+  color: rgb(63, 63, 63);
+  padding: 20px;
+}
+</style>

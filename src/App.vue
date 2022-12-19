@@ -1,28 +1,12 @@
 <template>
-  <header>
-    <ul>
-      <li @click.prevent="$router.push('/')">/</li>
-      <li @click.prevent="$router.push('/user')">/user</li>
-    </ul>
-  </header>
+  <Notifications />
   <main>
     <RouterView />
   </main>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Notifications from '@/components/Notifications.vue';
+</script>
 
-<style scoped>
-ul {
-  display: flex;
-}
-
-li {
-  margin: 0px 20px;
-  cursor: pointer;
-}
-
-li:hover {
-  color: red;
-}
-</style>
+<style scoped></style>

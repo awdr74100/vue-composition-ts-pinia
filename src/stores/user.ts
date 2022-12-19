@@ -1,43 +1,45 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
+import { useNotificationsStore } from '@/stores/notifications';
 
-interface User {
-  id: number;
+export interface User {
+  id: string;
   name: string;
-  email: string;
 }
 
 export const useUserStore = defineStore('user', () => {
-  const id = ref<null | number>(null);
-  const name = ref<null | string>(null);
-  const email = ref<null | string>(null);
+  const notifications = useNotificationsStore();
 
-  const loggedIn = computed(() => id.value !== null);
+  const id = ref('');
+  const name = ref('');
 
-  function updateUser(payload: {
-    id: null | number;
-    name: null | string;
-    email: null | string;
-  }) {
-    id.value = payload.id;
-    name.value = payload.name;
-    email.value = payload.email;
+  const signedIn = computed(() => !!id.value);
+
+  function updateUser(user: User) {
+    id.value = user.id;
+    name.value = user.name;
   }
 
   async function signIn(email: string, password: string) {
-    const url = `${import.meta.env.VITE_BACKEND_URL}/users/3`;
+    const url = `${import.meta.env.VITE_BACKEND_URL}/users/5`;
     const data = await fetch(url).then((res) => res.json() as Promise<User>);
 
     updateUser(data);
 
-    return true;
-  }
-
-  async function signOut() {
-    updateUser({ id: null, name: null, email: null });
+    notifications.add({ type: 'success', title: '登入成功...' });
 
     return true;
   }
 
-  return { id, name, email, loggedIn, signIn, signOut };
+  function signOut() {
+    const data = { id: '', name: '' };
+
+    updateUser(data);
+
+    notifications.add({ type: 'success', title: '登出成功...' });
+
+    return true;
+  }
+
+  return { id, name, signedIn, signIn, signOut };
 });
