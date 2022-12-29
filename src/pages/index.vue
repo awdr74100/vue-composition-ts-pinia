@@ -41,7 +41,7 @@
       </button>
     </li>
     <li v-else>
-      <button type="button" class="signOut" @click.prevent="user.signOut()">
+      <button type="button" class="signOut" @click.prevent="user.signOut">
         登出
       </button>
     </li>
