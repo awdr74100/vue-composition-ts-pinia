@@ -35,29 +35,33 @@
       <button
         type="button"
         class="signIn"
-        @click.prevent="user.signIn('email', 'password')"
+        @click.prevent="signIn('email', 'password')"
       >
         登入
       </button>
     </li>
     <li v-else>
-      <button type="button" class="signOut" @click.prevent="user.signOut">
+      <button type="button" class="signOut" @click.prevent="signOut">
         登出
       </button>
     </li>
   </ul>
-  <div class="user" v-if="user.signedIn">
-    <p>編號： {{ user.id }}</p>
-    <p>姓名： {{ user.name }}</p>
+  <div class="user" v-if="signedIn">
+    <p>編號： {{ id }}</p>
+    <p>姓名： {{ name }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { useNotificationsStore } from '@/stores/notifications';
 import { useUserStore } from '@/stores/user';
 
 const notifications = useNotificationsStore();
 const user = useUserStore();
+
+const { id, name, signedIn } = storeToRefs(user);
+const { signIn, signOut } = user;
 </script>
 
 <style scoped>
